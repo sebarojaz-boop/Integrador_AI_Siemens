@@ -29,9 +29,6 @@ from memory_store import (
     clear_chat_history
 )
 
-# =========================
-# OPENAI
-# =========================
 load_dotenv()
 
 api_key = None
@@ -42,14 +39,11 @@ except Exception:
     api_key = os.getenv("OPENAI_API_KEY")
 
 if not api_key:
-    st.error("Falta configurar OPENAI_API_KEY.")
+    st.error("No se encontró OPENAI_API_KEY")
     st.stop()
 
 client = OpenAI(api_key=api_key)
 
-# =========================
-# SYSTEM PROMPT
-# =========================
 SYSTEM_PROMPT = """
 Eres un Ingeniero Senior Siemens experto en crear proyectos desde cero en TIA Portal.
 
@@ -80,9 +74,6 @@ Reglas:
 """
 
 
-# =========================
-# RAG
-# =========================
 @st.cache_resource
 def init_rag():
     return load_knowledge()
@@ -90,13 +81,7 @@ def init_rag():
 
 def ask_ai(user_input, extra_context=""):
 
-    context = search(
-        user_input,
-        index,
-        chunks,
-        k=5
-    )
-
+    context = search(user_input, index, chunks, k=5)
     context_text = "\n\n".join(context)
 
     history_text = "\n".join(
@@ -123,9 +108,6 @@ def ask_ai(user_input, extra_context=""):
     return response.output_text, context_text
 
 
-# =========================
-# PAGE
-# =========================
 st.set_page_config(
     page_title="Siemens AI Engineer",
     page_icon="🧠",
@@ -135,36 +117,120 @@ st.set_page_config(
 st.markdown("""
 <style>
 
+.stApp {
+    background:
+        radial-gradient(circle at top left, rgba(0,245,255,0.18), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(37,99,235,0.16), transparent 40%),
+        linear-gradient(135deg, #050B14 0%, #07111F 45%, #0F172A 100%);
+    color: #F8FAFC;
+}
+
+section[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #020617 0%, #0F172A 100%);
+    border-right: 1px solid rgba(0,245,255,0.25);
+}
+
+h1 {
+    font-size: 2.4rem !important;
+    font-weight: 900 !important;
+    color: #F8FAFC;
+    text-shadow: 0 0 18px rgba(0,245,255,0.35);
+}
+
+h2, h3 {
+    color: #E2E8F0;
+}
+
+.stButton > button {
+    width: 100%;
+    border-radius: 14px;
+    border: 1px solid rgba(0,245,255,0.45);
+    background: linear-gradient(90deg, #0F172A, #1E293B);
+    color: #F8FAFC;
+    font-weight: 700;
+    box-shadow: 0 0 12px rgba(0,245,255,0.10);
+    transition: all 0.2s ease-in-out;
+}
+
+.stButton > button:hover {
+    background: linear-gradient(90deg, #00F5FF, #2563EB);
+    color: #020617;
+    transform: translateY(-2px);
+    box-shadow: 0 0 22px rgba(0,245,255,0.45);
+}
+
+.stTabs [data-baseweb="tab-list"] {
+    gap: 10px;
+    border-bottom: 1px solid rgba(0,245,255,0.2);
+}
+
+.stTabs [data-baseweb="tab"] {
+    background: rgba(15,23,42,0.85);
+    border: 1px solid rgba(148,163,184,0.15);
+    border-radius: 14px 14px 0 0;
+    padding: 12px 20px;
+    color: #CBD5E1;
+    font-weight: 700;
+}
+
+.stTabs [aria-selected="true"] {
+    background: linear-gradient(90deg, #00F5FF, #38BDF8) !important;
+    color: #020617 !important;
+}
+
+[data-testid="stChatMessage"] {
+    background: rgba(15, 23, 42, 0.88);
+    border: 1px solid rgba(0,245,255,0.18);
+    border-radius: 20px;
+    padding: 1.1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
 .stChatInput {
     position: fixed !important;
     bottom: 20px;
     left: 320px;
     right: 30px;
-    background-color: #0e1117;
-    padding-top: 10px;
+    background: rgba(2,6,23,0.96);
+    padding: 14px;
     z-index: 999999;
+    border-top: 1px solid rgba(0,245,255,0.25);
+    box-shadow: 0 -8px 24px rgba(0,0,0,0.35);
 }
 
 .main .block-container {
-    padding-bottom: 150px;
+    padding-bottom: 160px;
 }
 
-section[data-testid="stSidebar"] {
-    background-color: #111827;
+div[data-testid="stMetric"] {
+    background: rgba(15,23,42,0.9);
+    border: 1px solid rgba(0,245,255,0.22);
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.25);
 }
 
-[data-testid="stChatMessage"] {
-    padding: 1rem;
-    border-radius: 12px;
-    margin-bottom: 1rem;
+.stAlert {
+    border-radius: 16px;
+    border: 1px solid rgba(0,245,255,0.22);
+}
+
+input, textarea {
+    border-radius: 14px !important;
+}
+
+hr {
+    border-color: rgba(0,245,255,0.18);
+}
+
+#chat-bottom {
+    height: 1px;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
-# =========================
-# TITLE
-# =========================
 st.title("🧠 Siemens AI Engineering Assistant")
 
 st.write(
@@ -173,35 +239,21 @@ Asistente guiado para crear proyectos Siemens desde cero en TIA Portal.
 """
 )
 
-# =========================
-# LOAD KB
-# =========================
 with st.spinner("Cargando base Siemens..."):
-
     index, chunks = init_rag()
 
 if index is None or chunks is None:
-
     st.error("No se pudo cargar la base Siemens.")
     st.stop()
 
-# =========================
-# SESSION
-# =========================
 if "messages" not in st.session_state:
     st.session_state.messages = load_chat_history()
 
 if "prefill" not in st.session_state:
     st.session_state.prefill = ""
 
-# =========================
-# PROJECT
-# =========================
 project = load_project()
 
-# =========================
-# SIDEBAR
-# =========================
 with st.sidebar:
 
     st.header("⚙️ Panel Industrial")
@@ -262,9 +314,6 @@ with st.sidebar:
     st.info("Documentos → data/uploaded_docs")
     st.info("Output → output")
 
-# =========================
-# TABS
-# =========================
 tab_chat, tab_project, tab_tools = st.tabs(
     [
         "💬 Chat",
@@ -273,9 +322,6 @@ tab_chat, tab_project, tab_tools = st.tabs(
     ]
 )
 
-# =========================================================
-# TAB PROJECT
-# =========================================================
 with tab_project:
 
     st.subheader("🏭 Proyecto Siemens desde Cero")
@@ -287,9 +333,6 @@ El asistente irá preguntando automáticamente lo que falta.
 """
     )
 
-    # =========================
-    # UPLOAD
-    # =========================
     st.divider()
 
     st.subheader("📎 Subir documentos")
@@ -369,9 +412,6 @@ Entrega:
                 "Primero sube uno o más documentos."
             )
 
-    # =========================
-    # FORM
-    # =========================
     st.divider()
 
     col1, col2 = st.columns(2)
@@ -452,9 +492,6 @@ Entrega:
 
         st.rerun()
 
-    # =========================
-    # QUESTIONS
-    # =========================
     st.divider()
 
     st.subheader("❓ Información faltante")
@@ -474,9 +511,6 @@ Entrega:
             "Información mínima completa."
         )
 
-    # =========================
-    # BRIEF
-    # =========================
     if st.button("📄 Generar Brief Proyecto"):
 
         path, content = generate_project_brief_file()
@@ -492,9 +526,6 @@ Entrega:
                 mime="text/plain"
             )
 
-    # =========================
-    # NEXT STEPS
-    # =========================
     if st.button("🧠 Preguntar siguiente información necesaria"):
 
         context_project = generate_project_context_text(
@@ -534,9 +565,6 @@ Debes:
 
         st.rerun()
 
-# =========================================================
-# TAB TOOLS
-# =========================================================
 with tab_tools:
 
     st.subheader("🧰 Herramientas")
@@ -638,9 +666,6 @@ Entrega:
                 mime="application/zip"
             )
 
-# =========================================================
-# TAB CHAT
-# =========================================================
 with tab_chat:
 
     for msg in st.session_state.messages:
@@ -718,3 +743,19 @@ Si faltan datos:
         save_chat_history(
             st.session_state.messages
         )
+
+    st.markdown('<div id="chat-bottom"></div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <script>
+    setTimeout(function() {
+        const elements = window.parent.document.querySelectorAll('[id="chat-bottom"]');
+        if (elements.length > 0) {
+            elements[elements.length - 1].scrollIntoView({
+                behavior: "smooth",
+                block: "end"
+            });
+        }
+    }, 500);
+    </script>
+    """, unsafe_allow_html=True)
