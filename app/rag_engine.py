@@ -8,8 +8,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-client = OpenAI()
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 KNOWLEDGE_FOLDER = os.path.join(BASE_DIR, "knowledge_base")
@@ -17,6 +15,24 @@ INDEX_FOLDER = os.path.join(BASE_DIR, "index")
 
 INDEX_PATH = os.path.join(INDEX_FOLDER, "faiss.index")
 CHUNKS_PATH = os.path.join(INDEX_FOLDER, "chunks.pkl")
+
+
+def get_openai_client():
+    api_key = os.getenv("OPENAI_API_KEY")
+
+    try:
+        import streamlit as st
+        api_key = st.secrets.get("OPENAI_API_KEY", api_key)
+    except Exception:
+        pass
+
+    if not api_key:
+        raise ValueError("Falta OPENAI_API_KEY")
+
+    return OpenAI(api_key=api_key)
+
+
+client = get_openai_client()
 
 
 def extract_pdf_text(path):
