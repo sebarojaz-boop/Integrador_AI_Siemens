@@ -1,4 +1,4 @@
-import os
+﻿import os
 import pandas as pd
 from datetime import datetime
 
@@ -21,9 +21,9 @@ def find_io_excel():
 def clean_tag(text):
     text = str(text)
     replacements = {
-        "á": "a", "é": "e", "í": "i", "ó": "o", "ú": "u",
-        "Á": "A", "É": "E", "Í": "I", "Ó": "O", "Ú": "U",
-        "ñ": "n", "Ñ": "N"
+        "Ã¡": "a", "Ã©": "e", "Ã­": "i", "Ã³": "o", "Ãº": "u",
+        "Ã": "A", "Ã‰": "E", "Ã": "I", "Ã“": "O", "Ãš": "U",
+        "Ã±": "n", "Ã‘": "N"
     }
 
     for old, new in replacements.items():
@@ -40,10 +40,10 @@ def detect_class(text):
     if any(x in t for x in ["emergencia", "e-stop", "safety", "seguridad"]):
         return "SAFETY", "SF"
 
-    if any(x in t for x in ["motor", "bomba", "valvula", "válvula", "solenoide", "partida", "run"]):
+    if any(x in t for x in ["motor", "bomba", "valvula", "vÃ¡lvula", "solenoide", "partida", "run"]):
         return "OUTPUT", "DO"
 
-    if any(x in t for x in ["sensor", "switch", "boton", "botón", "pulsador", "nivel", "presostato", "fin de carrera"]):
+    if any(x in t for x in ["sensor", "switch", "boton", "botÃ³n", "pulsador", "nivel", "presostato", "fin de carrera"]):
         return "INPUT", "DI"
 
     if any(x in t for x in ["alarma", "fault", "falla", "error"]):
@@ -56,7 +56,7 @@ def load_io_dataframe():
     excel = find_io_excel()
 
     if excel is None:
-        return None, "No se encontró Excel IO en data/io."
+        return None, "No se encontrÃ³ Excel IO en data/io."
 
     df = pd.read_excel(excel)
     return df, excel
@@ -104,11 +104,11 @@ def generate_plc_tags():
 def generate_ob1_st():
     code = """// ==================================================
 // OB1 - MAIN PROGRAM
-// Siemens AI Engineering Assistant
+// Industrial Automation AI Engineer
 // ==================================================
 
 REGION Read_Inputs
-    // Llamar aquí FC_ReadInputs
+    // Llamar aquÃ­ FC_ReadInputs
     // FC_ReadInputs();
 END_REGION
 
@@ -118,7 +118,7 @@ REGION Safety_And_Interlocks
 END_REGION
 
 REGION Automatic_Sequence
-    // Ejecutar secuencia automática principal
+    // Ejecutar secuencia automÃ¡tica principal
     // FB_MainSequence();
 END_REGION
 
@@ -176,7 +176,7 @@ BEGIN
         Fault := FALSE;
     END_IF;
 
-    // Condición de seguridad
+    // CondiciÃ³n de seguridad
     IF NOT SafetyOK THEN
         MotorRun := FALSE;
         StartMemory := FALSE;
@@ -197,10 +197,10 @@ BEGIN
     // Comando motor
     MotorRun := StartMemory AND SafetyOK AND NOT Fault;
 
-    // Supervisión básica feedback
+    // SupervisiÃ³n bÃ¡sica feedback
     IF MotorRun AND NOT Feedback THEN
-        // Recomendación: reemplazar por TON en TIA Portal
-        // para evitar falla instantánea
+        // RecomendaciÃ³n: reemplazar por TON en TIA Portal
+        // para evitar falla instantÃ¡nea
     END_IF;
 
 END_FUNCTION_BLOCK
@@ -268,7 +268,7 @@ END_DATA_BLOCK
 
 
 def generate_readme():
-    text = f"""# Paquete de Ingeniería Siemens generado
+    text = f"""# Paquete de IngenierÃ­a Siemens generado
 
 Fecha: {datetime.now().strftime("%Y-%m-%d %H:%M")}
 
@@ -286,7 +286,7 @@ Archivos generados:
 4. DB_Global_Structure.txt
    - Propuesta de UDTs y DB global.
 
-Recomendación de implementación:
+RecomendaciÃ³n de implementaciÃ³n:
 
 1. Crear proyecto en TIA Portal.
 2. Definir PLC S7-1200 o S7-1500.
@@ -298,7 +298,7 @@ Recomendación de implementación:
 8. Validar seguridad, emergencia e interlocks antes de probar en terreno.
 
 Advertencia:
-Este paquete es una base de ingeniería. Debe ser revisado por personal calificado antes de usarlo en una máquina real.
+Este paquete es una base de ingenierÃ­a. Debe ser revisado por personal calificado antes de usarlo en una mÃ¡quina real.
 """
 
     path = os.path.join(OUTPUT_DIR, "README_Implementacion_TIA.txt")
@@ -326,7 +326,7 @@ def generate_engineering_package():
     files.extend([ob1_path, fb_path, db_path, readme_path])
 
     summary = f"""
-Paquete de ingeniería generado correctamente.
+Paquete de ingenierÃ­a generado correctamente.
 
 Archivos:
 {chr(10).join(files)}

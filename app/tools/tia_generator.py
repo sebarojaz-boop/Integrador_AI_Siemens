@@ -1,4 +1,4 @@
-import os
+﻿import os
 import pandas as pd
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -27,10 +27,10 @@ def detect_signal_type(row_text):
     if any(x in text for x in ["emergencia", "e-stop", "parada emergencia", "safety"]):
         return "SAFETY"
 
-    if any(x in text for x in ["motor", "bomba", "valvula", "válvula", "partida", "run"]):
+    if any(x in text for x in ["motor", "bomba", "valvula", "vÃ¡lvula", "partida", "run"]):
         return "OUTPUT"
 
-    if any(x in text for x in ["sensor", "switch", "pulsador", "boton", "botón", "nivel", "presostato", "fin de carrera"]):
+    if any(x in text for x in ["sensor", "switch", "pulsador", "boton", "botÃ³n", "nivel", "presostato", "fin de carrera"]):
         return "INPUT"
 
     if any(x in text for x in ["alarma", "fault", "falla"]):
@@ -41,8 +41,8 @@ def detect_signal_type(row_text):
 
 def siemens_tag_name(text, prefix):
     clean = str(text)
-    clean = clean.replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u")
-    clean = clean.replace("Á", "A").replace("É", "E").replace("Í", "I").replace("Ó", "O").replace("Ú", "U")
+    clean = clean.replace("Ã¡", "a").replace("Ã©", "e").replace("Ã­", "i").replace("Ã³", "o").replace("Ãº", "u")
+    clean = clean.replace("Ã", "A").replace("Ã‰", "E").replace("Ã", "I").replace("Ã“", "O").replace("Ãš", "U")
     clean = "".join(c if c.isalnum() else "_" for c in clean)
     clean = "_".join([x for x in clean.split("_") if x])
     clean = clean[:45]
@@ -59,7 +59,7 @@ def generate_tia_tags():
     excel_path = find_io_excel()
 
     if excel_path is None:
-        return None, "No encontré archivo Excel en data/io."
+        return None, "No encontrÃ© archivo Excel en data/io."
 
     df = pd.read_excel(excel_path)
     df.columns = [normalize_col(c) for c in df.columns]
@@ -111,8 +111,8 @@ def generate_tia_tags():
     out_df.to_excel(output_path, index=False)
 
     summary = f"""
-Archivo leído: {os.path.basename(excel_path)}
-Total señales procesadas: {len(out_df)}
+Archivo leÃ­do: {os.path.basename(excel_path)}
+Total seÃ±ales procesadas: {len(out_df)}
 
 Resumen:
 - Entradas detectadas: {len(out_df[out_df["Signal_Class"] == "INPUT"])}
@@ -132,14 +132,14 @@ def generate_base_st_program():
     st_code = """
 // ==================================================
 // PROGRAMA BASE PROPUESTO PARA TIA PORTAL - S7-1200/S7-1500
-// Generado por Siemens AI Engineering Assistant
+// Generado por Industrial Automation AI Engineer
 // ==================================================
 
 // OB1 - Main Cycle
-// Recomendación:
+// RecomendaciÃ³n:
 // 1. Leer entradas
 // 2. Procesar seguridad e interlocks
-// 3. Ejecutar secuencia automática
+// 3. Ejecutar secuencia automÃ¡tica
 // 4. Comandar salidas
 // 5. Generar alarmas para HMI
 
@@ -188,7 +188,7 @@ END_IF;
 // =====================
 
 IF NOT Start_PB AND NOT Stop_PB THEN
-    // Condición referencial, ajustar según criterio de planta
+    // CondiciÃ³n referencial, ajustar segÃºn criterio de planta
 END_IF;
 """
 

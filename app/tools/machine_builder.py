@@ -1,4 +1,4 @@
-import os
+﻿import os
 import zipfile
 from datetime import datetime
 
@@ -82,7 +82,7 @@ def generate_tia_manual_pdf(project_name):
         (
             "1. Crear Proyecto",
             """
-Abrir TIA Portal → Create new project → asignar nombre →
+Abrir TIA Portal â†’ Create new project â†’ asignar nombre â†’
 Create.
 """
         ),
@@ -90,8 +90,8 @@ Create.
         (
             "2. Agregar PLC",
             """
-Devices & Networks → Add new device →
-Controller → seleccionar S7-1200 o S7-1500 →
+Devices & Networks â†’ Add new device â†’
+Controller â†’ seleccionar S7-1200 o S7-1500 â†’
 Add.
 """
         ),
@@ -99,7 +99,7 @@ Add.
         (
             "3. Crear UDTs",
             """
-PLC data types → Add new data type.
+PLC data types â†’ Add new data type.
 
 Crear:
 - UDT_Motor
@@ -114,8 +114,8 @@ Copiar estructuras desde:
         (
             "4. Crear DB Global",
             """
-Program blocks → Add new block →
-Data block → DB_Global_IO →
+Program blocks â†’ Add new block â†’
+Data block â†’ DB_Global_IO â†’
 Optimized block access.
 """
         ),
@@ -123,9 +123,9 @@ Optimized block access.
         (
             "5. Crear FB_MotorControl",
             """
-Program blocks → Add new block →
-Function Block →
-Language: SCL →
+Program blocks â†’ Add new block â†’
+Function Block â†’
+Language: SCL â†’
 Pegar contenido de:
 02_FB_MotorControl_ST.txt
 """
@@ -134,7 +134,7 @@ Pegar contenido de:
         (
             "6. Crear FB_ValveControl",
             """
-Crear Function Block SCL →
+Crear Function Block SCL â†’
 Pegar contenido:
 03_FB_ValveControl_ST.txt
 """
@@ -143,7 +143,7 @@ Pegar contenido:
         (
             "7. Crear FB_SequenceManager",
             """
-Crear Function Block SCL →
+Crear Function Block SCL â†’
 Pegar contenido:
 04_FB_SequenceManager_ST.txt
 """
@@ -152,7 +152,7 @@ Pegar contenido:
         (
             "8. Editar OB1",
             """
-Abrir Main [OB1] →
+Abrir Main [OB1] â†’
 usar estructura:
 06_OB1_MainCycle_ST.txt
 """
@@ -161,8 +161,8 @@ usar estructura:
         (
             "9. PLC Tags",
             """
-Abrir PLC Tags →
-crear tabla →
+Abrir PLC Tags â†’
+crear tabla â†’
 usar:
 PLC_Tags_TIA.xlsx
 """
@@ -171,16 +171,16 @@ PLC_Tags_TIA.xlsx
         (
             "10. Compilar",
             """
-Click derecho PLC →
-Compile → Software.
+Click derecho PLC â†’
+Compile â†’ Software.
 """
         ),
 
         (
             "11. Descargar al PLC",
             """
-Download to device →
-seleccionar Ethernet →
+Download to device â†’
+seleccionar Ethernet â†’
 Load.
 """
         ),
@@ -192,7 +192,7 @@ Validar:
 - E-Stop
 - interlocks
 - feedbacks
-- simulación
+- simulaciÃ³n
 antes de terreno.
 """
         )
@@ -227,7 +227,7 @@ antes de terreno.
     footer = Paragraph(
         """
 <b>IMPORTANTE:</b><br/>
-Este paquete fue generado automáticamente por Siemens AI Engineering Assistant.<br/>
+Este paquete fue generado automÃ¡ticamente por Industrial Automation AI Engineer.<br/>
 Todo proyecto debe validarse por un ingeniero calificado antes de puesta en marcha.
 """,
         styles['BodyText']

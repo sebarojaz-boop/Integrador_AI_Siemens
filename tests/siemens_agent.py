@@ -1,4 +1,4 @@
-from openai import OpenAI
+﻿from openai import OpenAI
 from rag_engine import load_knowledge, search
 
 # =========================
@@ -8,22 +8,22 @@ client = OpenAI()  # usa OPENAI_API_KEY del sistema
 
 
 # =========================
-# PROMPT INGENIERÍA
+# PROMPT INGENIERÃA
 # =========================
 SYSTEM_PROMPT = """
 Eres un Ingeniero Senior Siemens experto en:
 
 - TIA Portal
 - PLC S7-1200 / S7-1500
-- Automatización industrial
+- AutomatizaciÃ³n industrial
 - Ladder / FBD / STL
-- Diagnóstico de fallas eléctricas
+- DiagnÃ³stico de fallas elÃ©ctricas
 
-Responde con formato técnico claro:
-- Diagnóstico
+Responde con formato tÃ©cnico claro:
+- DiagnÃ³stico
 - Causa probable
-- Solución
-- Recomendación de mantenimiento
+- SoluciÃ³n
+- RecomendaciÃ³n de mantenimiento
 """
 
 
@@ -32,16 +32,16 @@ Responde con formato técnico claro:
 # =========================
 def main():
 
-    print("\n🧠 SIEMENS AI ENGINEERING ASSISTANT")
+    print("\nðŸ§  Industrial Automation AI Engineer")
     print("Inicializando sistema...\n")
 
     index, chunks = load_knowledge()
 
     if index is None or chunks is None:
-        print("⚠ Base de conocimiento no cargada.")
+        print("âš  Base de conocimiento no cargada.")
         return
 
-    print("✔ Sistema listo.\n")
+    print("âœ” Sistema listo.\n")
 
     while True:
 
@@ -55,7 +55,7 @@ def main():
         # =========================
         context = search(q, index, chunks)
 
-        context_text = "\n\n".join(context) if context else "Sin contexto técnico disponible."
+        context_text = "\n\n".join(context) if context else "Sin contexto tÃ©cnico disponible."
 
         # =========================
         # OPENAI RESPONSE (CORRECTO)
@@ -67,7 +67,7 @@ def main():
 
         answer = response.output_text
 
-        print("\n🤖 RESPUESTA:\n")
+        print("\nðŸ¤– RESPUESTA:\n")
         print(answer)
         print("\n" + "-" * 60 + "\n")
 
