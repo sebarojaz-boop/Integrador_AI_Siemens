@@ -1,0 +1,10 @@
+venv/
+.env
+__pycache__/
+*.pyc
+memory/
+output/
+data/uploaded_docs/
+app/__pycache__/
+app/tools/__pycache__/
+.streamlit/

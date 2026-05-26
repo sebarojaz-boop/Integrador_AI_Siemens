@@ -1,0 +1,10 @@
+streamlit
+openai
+pandas
+numpy
+faiss-cpu
+python-dotenv
+pypdf
+openpyxl
+reportlab
+python-docx
