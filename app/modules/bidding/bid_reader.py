@@ -1,4 +1,4 @@
-import os
+﻿import os
 import shutil
 import pandas as pd
 from pypdf import PdfReader
@@ -109,3 +109,5 @@ def process_bid_documents(uploaded_files):
         f.write(full_text)
 
     return full_text
+
+

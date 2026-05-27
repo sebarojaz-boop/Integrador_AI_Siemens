@@ -1,4 +1,4 @@
-import os
+﻿import os
 import shutil
 import pandas as pd
 from pypdf import PdfReader
@@ -108,3 +108,5 @@ def process_uploaded_files(uploaded_files):
         f.write(all_text)
 
     return all_text
+
+

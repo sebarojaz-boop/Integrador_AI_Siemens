@@ -32,7 +32,7 @@ Responde con formato tÃ©cnico claro:
 # =========================
 def main():
 
-    print("\nðŸ§  Industrial Automation AI Engineer")
+    print("\nðŸ§  SCA AI Engineering Assistant")
     print("Inicializando sistema...\n")
 
     index, chunks = load_knowledge()
@@ -74,3 +74,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+

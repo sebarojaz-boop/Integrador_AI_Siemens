@@ -1,4 +1,4 @@
-import os
+﻿import os
 import pandas as pd
 from datetime import datetime
 
@@ -182,3 +182,5 @@ Archivos generados:
 """
 
     return quote_path, proposal_path, summary
+
+

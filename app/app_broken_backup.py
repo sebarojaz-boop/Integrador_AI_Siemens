@@ -9,7 +9,7 @@ import streamlit as st
 # CONFIG BASE
 # =========================================================
 
-APP_NAME = "Industrial Automation AI Engineer"
+APP_NAME = "SCA AI Engineering Assistant"
 APP_VERSION = "V1.0 Multimarca"
 BASE_DIR = Path(__file__).resolve().parent.parent
 OUTPUT_DIR = BASE_DIR / "output"
@@ -357,7 +357,7 @@ def generate_basic_engineering_package():
     content = f"""
 # PAQUETE DE INGENIERÍA INDUSTRIAL
 
-Generado por: Industrial Automation AI Engineer  
+Generado por: SCA AI Engineering Assistant  
 Fecha: {datetime.now().strftime("%d-%m-%Y %H:%M")}
 
 ---
@@ -429,7 +429,7 @@ def build_prompt(user_text):
     memory = st.session_state.project_memory
 
     return f"""
-Eres Industrial Automation AI Engineer, un experto industrial multimarca en:
+Eres SCA AI Engineering Assistant, un experto industrial multimarca en:
 Siemens TIA Portal, Allen-Bradley Studio 5000, Schneider, ABB, Danfoss,
 Ignition, AVEVA, WinCC, FactoryTalk, redes industriales, SCADA, PLC,
 instrumentación, variadores, licitaciones y cotizaciones técnicas.
@@ -975,3 +975,5 @@ if show_context:
         st.warning(f"Memoria no cargada: {memory_error if 'memory_error' in globals() else 'sin detalle'}")
 
 st.markdown('<div class="footer-space"></div>', unsafe_allow_html=True)
+
+

@@ -1,4 +1,4 @@
-import os
+﻿import os
 import pandas as pd
 from datetime import datetime
 
@@ -82,3 +82,5 @@ ${final_price:,.0f} CLP
         "direct_cost": direct_cost,
         "final_price": final_price
     }
+
+

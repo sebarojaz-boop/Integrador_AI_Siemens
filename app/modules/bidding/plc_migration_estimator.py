@@ -1,4 +1,4 @@
-import os
+﻿import os
 import re
 import json
 import shutil
@@ -620,3 +620,5 @@ Esta cotización es preliminar. Para una oferta formal se recomienda solicitar:
 """
 
     return text
+
+

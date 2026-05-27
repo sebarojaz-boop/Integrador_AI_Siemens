@@ -1,4 +1,4 @@
-import os
+﻿import os
 import pandas as pd
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -32,3 +32,5 @@ def analyze_io_list():
     text = df.head(50).to_string(index=False)
 
     return "\n".join(resumen) + "\n\nPrimeras señales detectadas:\n" + text
+
+

@@ -1,4 +1,4 @@
-import re
+﻿import re
 
 
 KEYWORDS = {
@@ -186,3 +186,5 @@ def generate_missing_questions(detected, io_count):
         questions.append("¿Existen requerimientos de ciberseguridad, usuarios, VPN, VLAN o DMZ?")
 
     return questions
+
+

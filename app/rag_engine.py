@@ -1,4 +1,4 @@
-import os
+﻿import os
 import pickle
 import faiss
 import numpy as np
@@ -97,3 +97,5 @@ def search(query, index, chunks, k=5):
             results.append(chunks[idx])
 
     return results
+
+

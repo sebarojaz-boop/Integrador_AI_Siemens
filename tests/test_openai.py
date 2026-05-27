@@ -1,4 +1,4 @@
-from openai import OpenAI
+﻿from openai import OpenAI
 
 client = OpenAI()
 
@@ -8,3 +8,5 @@ response = client.responses.create(
 )
 
 print(response.output[0].content[0].text)
+
+

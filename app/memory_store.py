@@ -1,4 +1,4 @@
-import os
+﻿import os
 import json
 
 # =========================
@@ -107,3 +107,5 @@ def clear_chat_history():
         print(
             f"Error limpiando memoria: {e}"
         )
+
+

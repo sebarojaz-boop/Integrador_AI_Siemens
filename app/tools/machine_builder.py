@@ -227,7 +227,7 @@ antes de terreno.
     footer = Paragraph(
         """
 <b>IMPORTANTE:</b><br/>
-Este paquete fue generado automÃ¡ticamente por Industrial Automation AI Engineer.<br/>
+Este paquete fue generado automÃ¡ticamente por SCA AI Engineering Assistant.<br/>
 Todo proyecto debe validarse por un ingeniero calificado antes de puesta en marcha.
 """,
         styles['BodyText']
@@ -378,3 +378,6 @@ END_REGION
             )
 
     return zip_path, files
+
+
+

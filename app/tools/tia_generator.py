@@ -132,7 +132,7 @@ def generate_base_st_program():
     st_code = """
 // ==================================================
 // PROGRAMA BASE PROPUESTO PARA TIA PORTAL - S7-1200/S7-1500
-// Generado por Industrial Automation AI Engineer
+// Generado por SCA AI Engineering Assistant
 // ==================================================
 
 // OB1 - Main Cycle
@@ -198,3 +198,6 @@ END_IF;
         f.write(st_code)
 
     return output_path, st_code
+
+
+

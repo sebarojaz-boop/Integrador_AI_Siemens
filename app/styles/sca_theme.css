@@ -1,4 +1,4 @@
-[data-testid="stSidebarNav"] {
+﻿[data-testid="stSidebarNav"] {
     display: none !important;
 }
 
@@ -114,3 +114,5 @@ section[data-testid="stSidebar"] {
 h1, h2, h3, p, span, label {
     color: #ffffff !important;
 }
+
+

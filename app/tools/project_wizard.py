@@ -1,4 +1,4 @@
-import os
+﻿import os
 import json
 from datetime import datetime
 
@@ -241,3 +241,5 @@ def generate_project_brief_file():
         f.write(content)
 
     return path, content
+
+

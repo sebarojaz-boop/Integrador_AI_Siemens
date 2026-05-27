@@ -104,7 +104,7 @@ def generate_plc_tags():
 def generate_ob1_st():
     code = """// ==================================================
 // OB1 - MAIN PROGRAM
-// Industrial Automation AI Engineer
+// SCA AI Engineering Assistant
 // ==================================================
 
 REGION Read_Inputs
@@ -333,3 +333,6 @@ Archivos:
 """
 
     return files, summary
+
+
+

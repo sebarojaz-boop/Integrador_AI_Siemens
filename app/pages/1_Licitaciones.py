@@ -1,4 +1,4 @@
-import os
+﻿import os
 import streamlit as st
 
 from modules.bidding.bid_reader import process_bid_documents
@@ -102,3 +102,5 @@ if st.button("🧠 Analizar Licitación", key="btn_analyze_bid"):
 
     for question in extraction.get("preguntas_faltantes", []):
         st.info(question)
+
+

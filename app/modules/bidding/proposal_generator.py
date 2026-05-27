@@ -1,4 +1,4 @@
-import os
+﻿import os
 from datetime import datetime
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -96,3 +96,5 @@ def format_list(items):
         return "- No detectado claramente.\n"
 
     return "\n".join([f"- {item}" for item in items]) + "\n"
+
+

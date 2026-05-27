@@ -1,4 +1,4 @@
-def estimate_hh(
+﻿def estimate_hh(
     io_count=100,
     scada_screens=8,
     plc_count=1,
@@ -48,3 +48,5 @@ def estimate_hh(
         "Gestión técnica": round(management, 1),
         "TOTAL HH": round(total, 1)
     }
+
+

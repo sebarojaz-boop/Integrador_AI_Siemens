@@ -1,4 +1,4 @@
-import os
+﻿import os
 import streamlit as st
 
 from modules.bidding.plc_migration_estimator import analyze_plc_migration
@@ -166,3 +166,5 @@ if st.button("🧠 Generar Cotización de Migración y SCADA", key="btn_cotizaci
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             key="download_cotizacion_migracion_excel"
         )
+
+
