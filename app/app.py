@@ -1,6 +1,7 @@
 ﻿import os
 import base64
 import pickle
+import requests
 from pathlib import Path
 
 import streamlit as st
@@ -35,8 +36,8 @@ ROOT_DIR = APP_DIR.parent
 CSS_PATH = APP_DIR / "styles" / "sca_theme.css"
 LOGO_PATH = APP_DIR / "assets" / "sca_logo.svg"
 
-INDEX_PATH = ROOT_DIR / "faiss_index.bin"
-DOCS_PATH = ROOT_DIR / "docs.pkl"
+INDEX_PATH = ROOT_DIR / "vectorstore" / "faiss_index.bin"
+DOCS_PATH = ROOT_DIR / "vectorstore" / "docs.pkl"
 
 EMBEDDING_MODEL = "text-embedding-3-small"
 CHAT_MODEL = "gpt-4o-mini"
@@ -53,7 +54,6 @@ if CSS_PATH.exists():
     )
 
 logo_base64 = ""
-
 if LOGO_PATH.exists():
     logo_base64 = base64.b64encode(LOGO_PATH.read_bytes()).decode()
 
@@ -62,6 +62,35 @@ def logo_html(width=190):
     if not logo_base64:
         return "<div class='fallback-logo'>SCA</div>"
     return f'<img src="data:image/svg+xml;base64,{logo_base64}" width="{width}">'
+
+
+# =====================================================
+# INDICADORES ECONOMICOS
+# =====================================================
+
+@st.cache_data(ttl=60 * 60)
+def get_economic_indicators():
+    data = {
+        "usd": "No disponible",
+        "uf": "No disponible",
+    }
+
+    try:
+        response = requests.get("https://mindicador.cl/api", timeout=5)
+        response.raise_for_status()
+        payload = response.json()
+
+        usd = payload.get("dolar", {}).get("valor")
+        uf = payload.get("uf", {}).get("valor")
+
+        if usd:
+            data["usd"] = f"$ {usd:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        if uf:
+            data["uf"] = f"$ {uf:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    except Exception:
+        pass
+
+    return data
 
 
 # =====================================================
@@ -115,7 +144,6 @@ def search_rag(query: str, top_k: int = 5):
     _, indices = index.search(query_vector, top_k)
 
     results = []
-
     for i in indices[0]:
         if 0 <= i < len(docs):
             results.append(docs[i])
@@ -128,7 +156,6 @@ def build_context(chunks):
         return "No hay contexto documental RAG disponible."
 
     context = ""
-
     for i, chunk in enumerate(chunks, start=1):
         context += f"\n--- Documento {i} ---\n{chunk}\n"
 
@@ -144,7 +171,6 @@ def ai_response(user_prompt: str, module_context: str = ""):
 
     chunks = search_rag(user_prompt)
     context = build_context(chunks)
-
     memory = st.session_state.project_memory
 
     system_prompt = f"""
@@ -290,27 +316,27 @@ def set_module(module_key):
     st.rerun()
 
 
-def module_button(module_key):
+def module_card(module_key):
     item = MODULES[module_key]
 
-    if st.button(
-        f"{item['icon']}  {item['title']}",
-        key=f"btn_{module_key}",
-        use_container_width=True,
-    ):
-        set_module(module_key)
+    with st.container():
+        st.markdown(
+            f"""
+            <div class="module-card {item['color']}">
+                <div class="module-icon">{item['icon']}</div>
+                <h3>{item['title']}</h3>
+                <p>{item['desc']}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-    st.markdown(
-        f"""
-        <div class="module-card {item['color']}">
-            <div class="module-icon">{item['icon']}</div>
-            <h3>{item['title']}</h3>
-            <p>{item['desc']}</p>
-            <div class="module-line"></div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+        if st.button(
+            "Abrir módulo  →",
+            key=f"card_btn_{module_key}",
+            use_container_width=True,
+        ):
+            set_module(module_key)
 
 
 def sidebar_item(module_key, label=None):
@@ -471,14 +497,16 @@ if st.session_state.active_module == "home":
 
     for col, key in zip(row1, keys[:4]):
         with col:
-            module_button(key)
+            module_card(key)
 
     for col, key in zip(row2, keys[4:]):
         with col:
-            module_button(key)
+            module_card(key)
+
+    indicators = get_economic_indicators()
 
     st.markdown(
-        """
+        f"""
         <div class="bottom-status">
             <div>
                 <span class="status-icon purple">▣</span>
@@ -491,9 +519,14 @@ if st.session_state.active_module == "home":
                 <b>RAG preparado</b>
             </div>
             <div>
-                <span class="status-icon green">盾</span>
-                <p>Entorno</p>
-                <b>Industrial / OT</b>
+                <span class="status-icon green">UF</span>
+                <p>UF del día</p>
+                <b>{indicators["uf"]}</b>
+            </div>
+            <div>
+                <span class="status-icon blue">US$</span>
+                <p>Dólar observado</p>
+                <b>{indicators["usd"]}</b>
             </div>
         </div>
         """,
